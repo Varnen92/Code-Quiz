@@ -1,5 +1,4 @@
 var score = 0;
-
 const startButton = document.getElementById('start')
 const body = document.getElementById('mainbody')
 const questionContainerElement = document.getElementById('question-container')
@@ -35,7 +34,14 @@ const questions = [
             {text: '3. brackets', correct: false},
             {text: '4. square brackets', correct: false},
         ]
-    }
+    },
+    {
+        question: 'JavaScript is an example of object-orientated language:',
+        answers: [
+            {text: 'True', correct:true},
+            {text: 'False', correc:false},
+        ]
+    },
 ]
 
 function startGame() {
@@ -54,7 +60,6 @@ function resetState() {
     while (answerButtonsElement.firstChild) {
         answerButtonsElement.removeChild
         (answerButtonsElement.firstChild)
-
     }
 }
 
@@ -72,13 +77,21 @@ function showQuestion(question){
     })
 }
 
-
 function selectAnswer(e){
     const selectedButton = e.target
     const correct = selectedButton.dataset.correct
     Array.from(answerButtonsElement.children).forEach(button => {
         setStatusClass(button, button.dataset.correct)
     })
+    setTimeout(function(){
+        if (correct) {
+            score = score + 10
+        } else{
+            score = score - 10
+        };
+        currentQuestionIndex++
+        setNextQuestion()
+    }, 2000);
 }
 
 function setStatusClass(element, correct) {
