@@ -16,7 +16,24 @@ const questions = [
             {text: '1995', correct: true},
             {text: '1997', correct: false},
             {text: '1998', correct: false}
-
+        ]
+    },
+    {
+        question: 'Arrays in JavaScript can be used to store _______',
+        answers: [
+            {text:'1. numbers and strings', correct: false},
+            {text:'2. other arrays', correct: false},
+            {text:'3. boolean', correct: false},
+            {text:'4. all of the above', correct: true},
+        ]
+    },
+    {
+        question: 'The condition in an if/else is contained by ______',
+        answers: [
+            {text: '1. parenthesis', correct: true},
+            {text: '2. curly brackets', correct: false},
+            {text: '3. brackets', correct: false},
+            {text: '4. square brackets', correct: false},
         ]
     }
 ]
@@ -56,11 +73,28 @@ function showQuestion(question){
 }
 
 
-function selectAnswer(){
-
+function selectAnswer(e){
+    const selectedButton = e.target
+    const correct = selectedButton.dataset.correct
+    Array.from(answerButtonsElement.children).forEach(button => {
+        setStatusClass(button, button.dataset.correct)
+    })
 }
 
+function setStatusClass(element, correct) {
+    clearStatusClass(element)
+    if (correct) {
+        element.classList.add('correct')
+    } else {
+        element.classList.add('incorrect')
+    }
+    
+}
 
+function clearStatusClass(element) {
+    element.classList.remove('correct')
+    element.classList.remove('incorrect')
+}
 
 
 var countdownTimer = function(){
