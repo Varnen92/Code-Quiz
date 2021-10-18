@@ -1,6 +1,10 @@
 var score = 0;
 
-var question = document.getElementById("question");
+const startButton = document.getElementById('start')
+const body = document.getElementById('mainbody')
+const questionContainerElement = document.getElementById('question-container')
+
+
 
 let questions = [
     {
@@ -8,10 +12,20 @@ let questions = [
     }
 ]
 
-var hideText = function() {
+/* var hideText = function() {
     document.getElementById('mainbody').style.visibility = 'hidden';
 }
+ */
 
+function startGame() {
+    body.classList.add('hide')
+    questionContainerElement.classList.remove('hide')
+
+}
+
+function selectAnswer(){
+
+}
 
 
 var countdownTimer = function(){
@@ -30,6 +44,5 @@ var countdownTimer = function(){
 
 };
 
-
-document.getElementById("start").addEventListener("click", countdownTimer)
-document.getElementById("start").addEventListener("click", hideText)
+startButton.addEventListener('click', startGame)
+startButton.addEventListener('click', countdownTimer)
