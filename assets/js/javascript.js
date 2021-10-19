@@ -49,9 +49,10 @@ const questions = [
         ]
     },
 ]
-// start game function triggered by start quiz
+// start game function triggered by start quiz and reset score to 0 at start
 function startGame() {
     body.classList.add('hide')
+    score = 0
     currentQuestionIndex = 0
     interval = setInterval(clockTick, 1000)
     questionContainerElement.classList.remove('hide')
@@ -104,6 +105,7 @@ function endTest() {
     }
     else {
         parseInt(localStorage.setItem("highscore", score));
+        localStorage.setItem("username", username)
     }
     titleElement.innerText = 'You have reached the end of the test! Your final score is ' + score + " !" + ' The current high score is owned by ' + localStorage.getItem("username") + '! Their score was ' + localStorage.getItem("highscore"); 
     bodyElement.innerText = ''
@@ -137,6 +139,7 @@ function selectAnswer(e) {
         currentQuestionIndex++
         if (questions.length > currentQuestionIndex) {
             setNextQuestion()
+            console.log(score)
         } else {
             endTest()
         }
