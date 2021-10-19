@@ -1,6 +1,7 @@
 var score = 0;
 var highscore = localStorage.getItem("highscore")
 var counter = 60
+var interval;
 const startButton = document.getElementById('start')
 const body = document.getElementById('mainbody')
 const questionContainerElement = document.getElementById('question-container')
@@ -53,6 +54,7 @@ const questions = [
 function startGame() {
     body.classList.add('hide')
     currentQuestionIndex = 0
+    interval = setInterval(clockTick, 1000)
     questionContainerElement.classList.remove('hide')
     setNextQuestion()
 }
@@ -89,21 +91,33 @@ function showQuestion(question) {
 
 // End of Test, stores high score and modifies text to ending score text
 function endTest() {
+    clearInterval(interval)
+    counter = 60
     startButton.innerText = 'Restart'
     body.classList.remove('hide')
     questionContainerElement.classList.add('hide')
     titleElement.innerText = 'You have reached the end of the test! Your final score is ' + score + "!"
     // might go back and turn this into json string to retrieve 
-    if(highscore !== null){
+    if (highscore !== null) {
         if (score > highscore) {
-            parseInt(localStorage.setItem("highscore", score));       
+            parseInt(localStorage.setItem("username", score));
         }
     }
-    else{
-        parseInt(localStorage.setItem("highscore", score));
+    else {
+        parseInt(localStorage.setItem("username", score));
     }
-    bodyElement.innerText = ""
-    
+    bodyElement.innerText = "";
+    username = prompt("Please enter your name to save your score of " + score)
+}
+
+function clockTick() {
+    counter--
+    span = document.getElementById("countdown");
+    span.innerHTML = "Time Remaining: " + counter;
+    if (counter <= 0) {
+        endTest()
+        
+    }
 }
 
 // select answer  function to verify answer, add score and display color elements
@@ -117,7 +131,6 @@ function selectAnswer(e) {
         if (correct) {
             score = score + 10
         } else {
-            score = score - 10
             counter = counter - 15
         };
         currentQuestionIndex++
@@ -147,7 +160,7 @@ function clearStatusClass(element) {
     element.classList.remove('incorrect')
 }
 
-// Countdown Timer
+/* // Countdown Timer
 var countdownTimer = function () {
     setInterval(function () {
         counter--;
@@ -156,12 +169,13 @@ var countdownTimer = function () {
             span.innerHTML = "Time Remaining: " + counter;
         }
         if (counter <= 0) {
-            clearInterval(counter);
+            
             endTest();
+            clearInterval
         }
     }, 1000);
    
-};
+}; */
 
 startButton.addEventListener('click', startGame)
-startButton.addEventListener('click', countdownTimer)
+/* startButton.addEventListener('click', timerCount) */
