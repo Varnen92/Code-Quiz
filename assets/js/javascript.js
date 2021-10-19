@@ -1,12 +1,18 @@
 var score = 0;
+var highscore = localStorage.getItem("highscore")
+var counter = 60
 const startButton = document.getElementById('start')
 const body = document.getElementById('mainbody')
 const questionContainerElement = document.getElementById('question-container')
 const questionElement = document.getElementById('question')
 const answerButtonsElement = document.getElementById('answer-buttons')
+const titleElement = document.getElementById('codetext')
+const bodyElement = document.getElementById('bodytext')
+const highScore = document.getElementById('highscore')
 
 let currentQuestionIndex
 
+// questions array for quiz multiple choices
 const questions = [
     {
         question: 'When was JavaScript introduced?',
@@ -43,7 +49,7 @@ const questions = [
         ]
     },
 ]
-
+// start game function triggered by start quiz
 function startGame() {
     body.classList.add('hide')
     currentQuestionIndex = 0
@@ -51,17 +57,21 @@ function startGame() {
     setNextQuestion()
 }
 
+// sets next question and pull from next array
 function setNextQuestion() {
     resetState()
     showQuestion(questions[currentQuestionIndex])
 }
 
+// reset's the answers portion to erase old children and replace with new children
 function resetState() {
     while (answerButtonsElement.firstChild) {
         answerButtonsElement.removeChild
             (answerButtonsElement.firstChild)
     }
 }
+
+// shows the question and creates the elements
 
 function showQuestion(question) {
     questionElement.innerText = question.question
@@ -77,13 +87,26 @@ function showQuestion(question) {
     })
 }
 
+// End of Test, stores high score and modifies text to ending score text
 function endTest() {
     startButton.innerText = 'Restart'
     body.classList.remove('hide')
     questionContainerElement.classList.add('hide')
+    titleElement.innerText = 'You have reached the end of the test! Your final score is ' + score + "!"
+    // might go back and turn this into json string to retrieve 
+    if(highscore !== null){
+        if (score > highscore) {
+            parseInt(localStorage.setItem("highscore", score));       
+        }
+    }
+    else{
+        parseInt(localStorage.setItem("highscore", score));
+    }
+    bodyElement.innerText = ""
     
 }
 
+// select answer  function to verify answer, add score and display color elements
 function selectAnswer(e) {
     const selectedButton = e.target
     const correct = selectedButton.dataset.correct
@@ -95,9 +118,10 @@ function selectAnswer(e) {
             score = score + 10
         } else {
             score = score - 10
+            counter = counter - 15
         };
         currentQuestionIndex++
-        if (questions.length > currentQuestionIndex + 1) {
+        if (questions.length > currentQuestionIndex) {
             setNextQuestion()
         } else {
             endTest()
@@ -106,6 +130,7 @@ function selectAnswer(e) {
 
 }
 
+// sets elements to correct status class for background color of buttons
 function setStatusClass(element, correct) {
     clearStatusClass(element)
     if (correct) {
@@ -116,26 +141,26 @@ function setStatusClass(element, correct) {
 
 }
 
+// clears buttons of elements
 function clearStatusClass(element) {
     element.classList.remove('correct')
     element.classList.remove('incorrect')
 }
 
-
+// Countdown Timer
 var countdownTimer = function () {
-    var counter = 60;
     setInterval(function () {
         counter--;
         if (counter >= 0) {
             span = document.getElementById("countdown");
             span.innerHTML = "Time Remaining: " + counter;
         }
-        if (counter === 0) {
-            alert("sorry, out of time!");
+        if (counter <= 0) {
             clearInterval(counter);
+            endTest();
         }
     }, 1000);
-
+   
 };
 
 startButton.addEventListener('click', startGame)
