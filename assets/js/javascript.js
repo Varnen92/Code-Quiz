@@ -11,35 +11,35 @@ const questions = [
     {
         question: 'When was JavaScript introduced?',
         answers: [
-            {text: '1990', correct: false},
-            {text: '1995', correct: true},
-            {text: '1997', correct: false},
-            {text: '1998', correct: false}
+            { text: '1990', correct: false },
+            { text: '1995', correct: true },
+            { text: '1997', correct: false },
+            { text: '1998', correct: false }
         ]
     },
     {
         question: 'Arrays in JavaScript can be used to store _______',
         answers: [
-            {text:'1. numbers and strings', correct: false},
-            {text:'2. other arrays', correct: false},
-            {text:'3. boolean', correct: false},
-            {text:'4. all of the above', correct: true},
+            { text: '1. numbers and strings', correct: false },
+            { text: '2. other arrays', correct: false },
+            { text: '3. boolean', correct: false },
+            { text: '4. all of the above', correct: true },
         ]
     },
     {
         question: 'The condition in an if/else is contained by ______',
         answers: [
-            {text: '1. parenthesis', correct: true},
-            {text: '2. curly brackets', correct: false},
-            {text: '3. brackets', correct: false},
-            {text: '4. square brackets', correct: false},
+            { text: '1. parenthesis', correct: true },
+            { text: '2. curly brackets', correct: false },
+            { text: '3. brackets', correct: false },
+            { text: '4. square brackets', correct: false },
         ]
     },
     {
         question: 'JavaScript is an example of object-orientated language:',
         answers: [
-            {text: 'True', correct:true},
-            {text: 'False', correc:false},
+            { text: 'True', correct: true },
+            { text: 'False', correc: false },
         ]
     },
 ]
@@ -51,7 +51,7 @@ function startGame() {
     setNextQuestion()
 }
 
-function setNextQuestion () {
+function setNextQuestion() {
     resetState()
     showQuestion(questions[currentQuestionIndex])
 }
@@ -59,11 +59,11 @@ function setNextQuestion () {
 function resetState() {
     while (answerButtonsElement.firstChild) {
         answerButtonsElement.removeChild
-        (answerButtonsElement.firstChild)
+            (answerButtonsElement.firstChild)
     }
 }
 
-function showQuestion(question){
+function showQuestion(question) {
     questionElement.innerText = question.question
     question.answers.forEach(answer => {
         const button = document.createElement('button')
@@ -77,21 +77,33 @@ function showQuestion(question){
     })
 }
 
-function selectAnswer(e){
+function endTest() {
+    startButton.innerText = 'Restart'
+    body.classList.remove('hide')
+    questionContainerElement.classList.add('hide')
+    
+}
+
+function selectAnswer(e) {
     const selectedButton = e.target
     const correct = selectedButton.dataset.correct
     Array.from(answerButtonsElement.children).forEach(button => {
         setStatusClass(button, button.dataset.correct)
     })
-    setTimeout(function(){
+    setTimeout(function () {
         if (correct) {
             score = score + 10
-        } else{
+        } else {
             score = score - 10
         };
         currentQuestionIndex++
-        setNextQuestion()
-    }, 2000);
+        if (questions.length > currentQuestionIndex + 1) {
+            setNextQuestion()
+        } else {
+            endTest()
+        }
+    }, 1500)
+
 }
 
 function setStatusClass(element, correct) {
@@ -101,7 +113,7 @@ function setStatusClass(element, correct) {
     } else {
         element.classList.add('incorrect')
     }
-    
+
 }
 
 function clearStatusClass(element) {
@@ -110,7 +122,7 @@ function clearStatusClass(element) {
 }
 
 
-var countdownTimer = function(){
+var countdownTimer = function () {
     var counter = 60;
     setInterval(function () {
         counter--;
