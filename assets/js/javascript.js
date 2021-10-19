@@ -9,7 +9,6 @@ const questionElement = document.getElementById('question')
 const answerButtonsElement = document.getElementById('answer-buttons')
 const titleElement = document.getElementById('codetext')
 const bodyElement = document.getElementById('bodytext')
-const highScore = document.getElementById('highscore')
 
 let currentQuestionIndex
 
@@ -96,20 +95,22 @@ function endTest() {
     startButton.innerText = 'Restart'
     body.classList.remove('hide')
     questionContainerElement.classList.add('hide')
-    titleElement.innerText = 'You have reached the end of the test! Your final score is ' + score + "!"
-    // might go back and turn this into json string to retrieve 
-    if (highscore !== null) {
+    username = prompt("Please enter your name to save your score of " + score)
+       if (highscore !== null) {
         if (score > highscore) {
-            parseInt(localStorage.setItem("username", score));
+            parseInt(localStorage.setItem("highscore", score));
+            localStorage.setItem("username", username);
         }
     }
     else {
-        parseInt(localStorage.setItem("username", score));
+        parseInt(localStorage.setItem("highscore", score));
     }
-    bodyElement.innerText = "";
-    username = prompt("Please enter your name to save your score of " + score)
+    titleElement.innerText = 'You have reached the end of the test! Your final score is ' + score + " !" + ' The current high score is owned by ' + localStorage.getItem("username") + '! Their score was ' + localStorage.getItem("highscore"); 
+    bodyElement.innerText = ''
+
 }
 
+// clock function to trigger time remaining counter
 function clockTick() {
     counter--
     span = document.getElementById("countdown");
@@ -160,22 +161,4 @@ function clearStatusClass(element) {
     element.classList.remove('incorrect')
 }
 
-/* // Countdown Timer
-var countdownTimer = function () {
-    setInterval(function () {
-        counter--;
-        if (counter >= 0) {
-            span = document.getElementById("countdown");
-            span.innerHTML = "Time Remaining: " + counter;
-        }
-        if (counter <= 0) {
-            
-            endTest();
-            clearInterval
-        }
-    }, 1000);
-   
-}; */
-
 startButton.addEventListener('click', startGame)
-/* startButton.addEventListener('click', timerCount) */
